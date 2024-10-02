@@ -1,6 +1,14 @@
 #![allow(clippy::unwrap_used, clippy::disallowed_methods)] // We are just testing here.
 
 use std::{net::TcpListener, thread::spawn};
+use refimage::DynamicImageOwned;
+use image::open;
+
+fn load_and_transmit_image(path: &str, websocket: &mut tungstenite::WebSocket<std::net::TcpStream>) {
+    let img = open(path).expect("Could not load image");
+    let img = DynamicImageOwned::try_from(img).expect("Could not convert image");
+    websocket.send(img.as_raw_u8().into()).expect("Could not send image");
+}
 
 fn main() {
     let bind_addr = "127.0.0.1:9001";
@@ -16,6 +24,9 @@ fn main() {
                     if let Err(err) = websocket.send(msg.clone()) {
                         eprintln!("Error sending message: {err}");
                         break;
+                    } else if msg.is_text() && msg.to_text().unwrap() == "send test image" {
+                        load_and_transmit_image("res/test_image_1.png", &mut websocket);   
+                        eprintln!("Responded (send test image): {msg}");
                     } else {
                         eprintln!("Responded: {msg}");
                     }

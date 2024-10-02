@@ -6,6 +6,7 @@ dist
 
 # Rust compile target directories:
 target
+target/
 target_ra
 target_wasm
 
