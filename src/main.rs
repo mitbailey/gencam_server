@@ -1,4 +1,4 @@
-#![allow(clippy::unwrap_used, clippy::disallowed_methods)] // We are just testing here.
+#![deny(missing_docs)]
 /*!
  * # GenCam Server
  * This crate is an example of the client-facing portion of a Generic Camera-compatible server. This example loads an image from the file system, serializes it, and sends it using a GenCamPacket. The server listens for incoming connections and responds to requests for images.
