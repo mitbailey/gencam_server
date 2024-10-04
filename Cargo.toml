@@ -1,7 +1,7 @@
 [package]
 name = "gencam_server"
 version = "0.0.0"
-authors = ["Sunip Mukherjee <sunipkmukherjee@gmail.com>, Mit Bailey <mitbailey@outlook.com>"]
+authors = ["Mit Bailey <mitbailey@outlook.com>, Sunip Mukherjee <sunipkmukherjee@gmail.com>"]
 edition = "2021"
 
 [dependencies]
