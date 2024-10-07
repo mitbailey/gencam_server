@@ -22,7 +22,7 @@ fn load_and_transmit_debug_image(path: &str, websocket: &mut tungstenite::WebSoc
     let img = DynamicImageOwned::try_from(img).expect("Could not convert image.");
 
     // Create a new GenCamPacket with the image data.
-    let pkt = GenCamPacket::new(PacketType::Image, 0, 256, 256, Some(img.as_raw_u8().to_vec()));
+    let pkt = GenCamPacket::new(PacketType::Image, 0, 64, 64, Some(img.as_raw_u8().to_vec()));
     // Set msg to the serialized pkt.
     let msg = serde_json::to_vec(&pkt).unwrap();
     // Send the message.
@@ -52,8 +52,15 @@ fn main() {
                     match pkt.packet_type {
                         // If we received an image request, load and transmit the debug image.
                         PacketType::ImgReq => {
+                            let pkt = GenCamPacket::new(PacketType::Ack, 0, 0, 0, None);
+                            // Set msg to serialized pkt.
+                            let msg = serde_json::to_vec(&pkt).unwrap();
+                            // Send
+                            websocket.send(msg.into()).unwrap();  
+
                             i += 1;
-                            load_and_transmit_debug_image("res/test_image_1.png", &mut websocket, i);
+                            // load_and_transmit_debug_image("res/test_image_1.png", &mut websocket, i);
+                            load_and_transmit_debug_image(&format!("res/test_{}.png", i%10), &mut websocket, i);
                             eprintln!("Responded (ImgReq #{i})");
                         },
                         // Right now, we do not handle any other packet types.
