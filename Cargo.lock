@@ -534,7 +534,6 @@ dependencies = [
 [[package]]
 name = "gencam_packet"
 version = "0.1.0"
-source = "git+https://github.com/mitbailey/gencam_packet#c3ead6ce8667216056271d585d97031c7d407d55"
 dependencies = [
  "crc",
  "serde",
